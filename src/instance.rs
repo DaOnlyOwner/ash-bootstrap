@@ -369,7 +369,7 @@ impl<'a> InstanceBuilder<'a> {
   /// be found. This is only supported on feature `surface`.
   #[inline]
   pub fn require_surface_extensions(mut self, display_handle: &impl HasDisplayHandle) -> Option<Self> {
-    let required_extensions = ash_window::enumerate_required_extensions(display_handle.display_handle().unwrap()).ok()?;
+    let required_extensions = ash_window::enumerate_required_extensions(display_handle.display_handle().unwrap().as_raw()).ok()?;
     self
       .extensions
       .extend(required_extensions.iter().map(|name| (*name, true)));
