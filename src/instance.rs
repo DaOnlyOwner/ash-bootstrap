@@ -2,7 +2,7 @@
 use crate::BootstrapSmallVec;
 use ash::{extensions::ext::DebugUtils, prelude::VkResult, vk, Entry, Instance, LoadingError};
 use cstr::cstr;
-use raw_window_handle::HasDisplayHandle;
+use raw_window_handle::HasRawDisplayHandle;
 use std::{
   ffi::{c_void, CStr, CString, NulError},
   fmt,
@@ -368,8 +368,8 @@ impl<'a> InstanceBuilder<'a> {
   /// Returns `None` if the corresponding Vulkan surface extensions couldn't
   /// be found. This is only supported on feature `surface`.
   #[inline]
-  pub fn require_surface_extensions(mut self, display_handle: &impl HasDisplayHandle) -> Option<Self> {
-    let required_extensions = ash_window::enumerate_required_extensions(display_handle.display_handle().unwrap()).ok()?;
+  pub fn require_surface_extensions(mut self, display_handle: &impl HasRawDisplayHandle) -> Option<Self> {
+    let required_extensions = ash_window::enumerate_required_extensions(display_handle.raw_display_handle()).ok()?;
     self
       .extensions
       .extend(required_extensions.iter().map(|name| (*name, true)));
